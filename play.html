@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio Player</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      text-align: center;
+      font-family: sans-serif;
+    }
+    audio {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      display: block;
+    }
+    .speed-buttons {
+      margin-top: 0.5rem;
+    }
+    .speed-buttons button {
+      margin: 0 0.3rem;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      border: none;
+      background: #1976d2;
+      color: white;
+      cursor: pointer;
+    }
+    .speed-buttons button:hover {
+      background: #125a9c;
+    }
+  </style>
+</head>
+<body>
+  <audio id="audioPlayer" controls></audio>
+  <div class="speed-buttons">
+    <button onclick="setSpeed(0.6)">0.6x</button>
+    <button onclick="setSpeed(0.8)">0.8x</button>
+    <button onclick="setSpeed(1.0)">1.0x</button>
+    <button onclick="setSpeed(1.2)">1.2x</button>
+    <button onclick="setSpeed(1.4)">1.4x</button>
+  </div>
+
+  <script>
+    function setSpeed(rate) {
+      const audio = document.getElementById('audioPlayer');
+      audio.playbackRate = rate;
+    }
+
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    const audioUrl = getQueryParam('audio');
+    if (audioUrl && audioUrl.startsWith('https://')) {
+      document.getElementById('audioPlayer').src = audioUrl;
+    } else {
+      document.body.innerHTML = "<p style='color:red;'>有効な音声URLが指定されていません。</p>";
+    }
+  </script>
+</body>
+</html>

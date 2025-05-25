@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>音声プレイヤーリンク一括生成</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background-color: #f7f7f7;
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+    textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 200px;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      font-size: 1.1rem;
+      padding: 0.8rem 2rem;
+      margin: 1rem 0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #1976d2;
+      color: white;
+    }
+    button:hover {
+      background-color: #125a9c;
+    }
+    .result {
+      margin-top: 1.5rem;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .result a {
+      display: block;
+      margin-bottom: 0.5rem;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎧 音声プレイヤーリンク一括生成</h1>
+  <p>音声ファイルのURLを1行ずつ入力してください：</p>
+  <textarea id="inputUrls" placeholder="https://example.com/audio1.mp3
+https://example.com/audio2.mp3"></textarea><br />
+  <button onclick="generateLinks()">リンク生成</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function generateLinks() {
+      const input = document.getElementById('inputUrls').value.trim();
+      const lines = input.split('\n');
+      const baseUrl = 'https://proshatsuon.github.io/play-notion/play.html';
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '';
+
+      lines.forEach(line => {
+        const url = line.trim();
+        if (url.startsWith('https://')) {
+          const full = baseUrl + '?audio=' + encodeURIComponent(url);
+          const link = document.createElement('a');
+          link.href = full;
+          link.target = '_blank';
+          link.textContent = full;
+          resultDiv.appendChild(link);
+        }
+      });
+
+      if (resultDiv.innerHTML === '') {
+        resultDiv.innerHTML = '<p style="color:red;">有効なURLが見つかりませんでした。</p>';
+      }
+    }
+  </script>
+</body>
+</html>
