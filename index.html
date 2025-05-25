@@ -45,10 +45,21 @@
       margin-left: auto;
       margin-right: auto;
     }
-    .result a {
-      display: block;
+    .result div {
+      display: flex;
+      align-items: center;
       margin-bottom: 0.5rem;
-      word-break: break-word;
+      gap: 0.5rem;
+    }
+    .result input {
+      flex: 1;
+      font-size: 0.95rem;
+      padding: 0.4rem;
+    }
+    .result button.copy-btn {
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+      background-color: #4caf50;
     }
   </style>
 </head>
@@ -69,15 +80,31 @@ https://example.com/audio2.mp3"></textarea><br />
       const resultDiv = document.getElementById('result');
       resultDiv.innerHTML = '';
 
-      lines.forEach(line => {
+      lines.forEach((line, i) => {
         const url = line.trim();
         if (url.startsWith('https://')) {
           const full = baseUrl + '?audio=' + encodeURIComponent(url);
-          const link = document.createElement('a');
-          link.href = full;
-          link.target = '_blank';
-          link.textContent = full;
-          resultDiv.appendChild(link);
+          const container = document.createElement('div');
+
+          const inputField = document.createElement('input');
+          inputField.type = 'text';
+          inputField.value = full;
+          inputField.readOnly = true;
+          inputField.id = 'link-' + i;
+
+          const copyBtn = document.createElement('button');
+          copyBtn.textContent = 'コピー';
+          copyBtn.className = 'copy-btn';
+          copyBtn.onclick = () => {
+            navigator.clipboard.writeText(full).then(() => {
+              copyBtn.textContent = 'コピー済み！';
+              setTimeout(() => copyBtn.textContent = 'コピー', 1500);
+            });
+          };
+
+          container.appendChild(inputField);
+          container.appendChild(copyBtn);
+          resultDiv.appendChild(container);
         }
       });
 
