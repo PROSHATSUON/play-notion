@@ -19,10 +19,10 @@
       margin: 0 auto;
       display: block;
     }
-    .speed-buttons {
+    .controls {
       margin-top: 0.5rem;
     }
-    .speed-buttons button {
+    .controls button {
       margin: 0 0.3rem;
       padding: 0.4rem 0.8rem;
       font-size: 0.95rem;
@@ -32,25 +32,42 @@
       color: white;
       cursor: pointer;
     }
-    .speed-buttons button:hover {
+    .controls button:hover {
       background: #125a9c;
+    }
+    .controls button#repeatBtn {
+      background: #555;
+    }
+    .controls button#repeatBtn.on {
+      background: #e91e63;
     }
   </style>
 </head>
 <body>
   <audio id="audioPlayer" controls></audio>
-  <div class="speed-buttons">
+  <div class="controls">
     <button onclick="setSpeed(0.6)">0.6x</button>
     <button onclick="setSpeed(0.8)">0.8x</button>
     <button onclick="setSpeed(1.0)">1.0x</button>
     <button onclick="setSpeed(1.2)">1.2x</button>
     <button onclick="setSpeed(1.4)">1.4x</button>
+    <button onclick="toggleRepeat()" id="repeatBtn">🔁 OFF</button>
   </div>
 
   <script>
+    const audio = document.getElementById('audioPlayer');
+    let isRepeating = false;
+
     function setSpeed(rate) {
-      const audio = document.getElementById('audioPlayer');
       audio.playbackRate = rate;
+    }
+
+    function toggleRepeat() {
+      isRepeating = !isRepeating;
+      audio.loop = isRepeating;
+      const repeatBtn = document.getElementById('repeatBtn');
+      repeatBtn.textContent = isRepeating ? '🔁 ON' : '🔁 OFF';
+      repeatBtn.classList.toggle('on', isRepeating);
     }
 
     function getQueryParam(name) {
@@ -60,7 +77,7 @@
 
     const audioUrl = getQueryParam('audio');
     if (audioUrl && audioUrl.startsWith('https://')) {
-      document.getElementById('audioPlayer').src = audioUrl;
+      audio.src = audioUrl;
     } else {
       document.body.innerHTML = "<p style='color:red;'>有効な音声URLが指定されていません。</p>";
     }
