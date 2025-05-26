@@ -20,12 +20,19 @@
       display: block;
     }
     .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
       margin-top: 0.5rem;
+      padding: 0 1rem;
     }
     .controls button {
-      margin: 0 0.3rem;
-      padding: 0.4rem 0.8rem;
+      flex: 1 1 80px;
+      max-width: 100px;
+      min-width: 70px;
       font-size: 0.95rem;
+      padding: 0.4rem 0.8rem;
       border-radius: 6px;
       border: none;
       background: #1976d2;
